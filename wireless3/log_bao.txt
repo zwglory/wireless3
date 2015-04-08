@@ -1,0 +1,250 @@
+2015/2/19
+1.C++中string转换成int的方法:
+	#include <boost/lexical_cast.hpp> 
+	#include <string>
+
+	try 
+	{ 
+	 std::string text = "152"; 
+	 int number = boost::lexical_cast< int >( text ); 
+	} 
+	catch( const boost::bad_lexical_cast & ) 
+	{ 
+	 //转换失败 
+	}  
+	http://www.boost.org/doc/libs/1_57_0/libs/libraries.htm#Alphabetically
+
+2.从文件流读取到string：
+	2.1 
+		用getline(fstream, string)读取当前行，配合while();
+		while(getline(ff, message)){
+			cout << message << endl;
+		}
+	2.2 
+		直接读取所有的文件内容到string中
+		copy( istreambuf_iterator<char>(ff), istreambuf_iterator<char>(), back_inserter(message));
+		cout << message << endl;
+		//copy(InputIterator, InputIterator, OutputIterator)
+		//	前两个参数给出了迭代器范围，最后一个迭代器是目标
+		//back_inserter(string);在string后面插入新的元素
+		https://msdn.microsoft.com/zh-cn/library/vstudio/x9f6s1wf(v=vs.110).aspx
+		http://www.cplusplus.com/reference/iterator/back_inserter/
+
+3.boost下载
+	http://www.boost.org/users/history/version_1_57_0.html
+
+#######################################################################
+
+2015/2/20
+1.
+	//==============================================================
+	//Convert between string and int
+	//==============================================================
+
+	void str2int(int &int_temp,const string &string_temp)  
+	{  
+		stringstream stream(string_temp);  
+		stream >> int_temp;  
+	}  
+
+	void int2str(const int &int_temp,string &string_temp)  
+	{  
+			stringstream stream;  
+			stream << int_temp;  
+			string_temp = stream.str();   //此处也可以用 stream>>string_temp  
+	}  
+
+2. #include <cmath>
+	int max_len = pow(10.0, 9.0);
+
+3.	#include <sstream>	//std::stringstream
+	stringstream ss;
+
+	//copy(istreambuf_iterator<char>(ff), istreambuf_iterator<char>(), back_inserter(message));
+	//cout << message << endl;
+
+	////Convert string to num
+	//cout << "===========Convert string to num=============" << endl;
+	//ss << message;
+	//ss >> code_message;
+	//cout << code_message << endl;
+
+4.二进制文件的读取和写入：
+	ifstream infile("Data\\TestFile.txt", ifstream::binary);
+	ofstream outfile("Data\\NewFile.txt", ofstream::binary);
+	if (infile) {
+		// get length of file
+		infile.seekg (0, infile.end);
+		int length = infile.tellg();
+		infile.seekg (0, infile.beg);
+
+		std::cout << "Reading " << length << " characters... " << endl;
+
+		// allocate memory for file content
+		char * buffer = new char [length];
+
+		// read content of infile
+		infile.read (buffer,length);
+		cout << "Content in buffer is: " << buffer << endl;  
+
+		// write to outfile
+		outfile.write (buffer,length);
+
+		// release dynamically-allocated memory
+		delete[] buffer;
+
+		outfile.close();
+		infile.close();
+	}
+
+#######################################################################
+2015/2/21:
+
+1.	cout 对待整型数组和字符数组的区别：
+
+	int a[5] = {1, 2, 3, 4, 5};
+	cout << "a: " << a << endl
+		<< "*a: " << *a << endl;
+	char b[5] = {'e','e','d','v','a'};
+	cout << "b: " << b << endl
+		<< "*b: " << *b << endl;
+
+
+2.从文件中读元数据的版本，不知到怎样转换成 bit 数组：
+	////=============================================================================
+	//// read data file
+	////=============================================================================
+	//
+	//	cout << "=============== Reading data ==================" << endl;
+	//	ifstream infile("Data\\TestFile.txt", ifstream::binary);
+	//	ofstream outfile("Data\\binary", ofstream::binary);
+	//
+	//	if(!infile)
+	//		return -1;
+	//
+	//	// get length of file
+	//	infile.seekg (0, infile.end);
+	//	uint32_t length = infile.tellg();
+	//	infile.seekg (0, infile.beg);
+	//
+	//	std::cout << "Reading " << length << " characters... " << endl;
+	//
+	//	// allocate memory for file content
+	//	char* message = new char [length];
+	//
+	//	// read content of infile
+	//	infile.read (message,length);
+	//	cout << "Content in message is: " << message << endl;  
+	//
+	// release dynamically-allocated memory, and close file
+	delete[] message;
+	infile.close();
+
+3.自制随机数生成
+	#include "Random.h"
+
+	int* m;
+	m = bit_rand(100);
+	
+	cout << "message is: " << endl
+		<< message << endl;
+	cout << "m is:" << endl;
+	for (int i = 0; i != 100; ++i){
+		cout << m[i] << " ";
+	}
+4.
+#######################################################################
+
+2015/03/02
+
+1. C++中对象数组的定义。
+
+2. 
+
+##########################################################################
+2015/03/09
+1. hash_func.h: 的声明中不能使用 inline， 可能因为这个函数是用在其他文件中的，
+	另外，最好在引用 hash_func 时使用 extern。
+
+2. sizeof(指针)= 存放指针所需要的内存大小，使用sizeof求数组长度只适用于一般数组；
+	动态数组中不能使用sizeof求数组长度，想办法把长度传到类中。
+
+3. 动态数组使用前最好要初始化。
+
+4. Debugging: SpineEncoder.cpp(Ln 69)
+	使用 vector 代替了动态数组
+
+
+############################################################################
+2015/03/14
+
+1. 使用 vector 添加或者删除数组中的元素果然比较方便，erase() 删除 vector 中的元素。
+2. 在编写程序时，尽量在中间的步骤中加入输出文件，也就是把编码的中间形式以文件形式输出。
+
+#############################################################################
+2015/03/15
+
+1. /*while((ivec+1) != (this->next_values).end()){
+		*ivec = *(ivec+1);
+		++ivec;
+	}*/
+2. 
+
+#####################################################################
+2015/03/16
+
+1. RNG 中的初值 i 改为 21215， 即 16 位的 int 值，因为 hash 函数的第二个形参类型为int。
+
+#####################################################################
+2015/03/17
+
+1. 编码部分程序调通，结果输出在 symbol.txt 中，算法实现的正确性有待于检查。
+   问题：spine 的初始化，本来用在构造函数中，但是没有分配固定的空间，反而在析构函数中将它 delete 掉了，
+		可能导致了写入过多值，或者 delete 了不存在的值。
+   解决：spine 成员的初始化放在了 encoder() 函数中，因为spine是成员，所以析构函数中的 delete 还是有必要的。
+   注意：new 空间时尽量定义空间大小，分配的空间要删除，vector 的清除使用 clear 方法。
+
+2. 问题：文件中的symbol的数量不对。应该是 k*len_spine = 3*38 = 114,结果是36。
+   解决：输出文件时，阈值设定的不对。
+
+##########################################################################
+2015/03/23
+
+1. 类成员最好是放在private中，那个需要被调用再把它拿出来。
+
+2. 译码部分第一个问题是 wavefront 的表示。
+
+###########################################################################
+2015/03/26
+
+1. 重复包含头文件
+解决办法：
+	#ifndef _RNG_H_
+	#define _RNG_H_
+
+	#include <vector>
+	#include <itcomm.h>
+
+	class RNG{
+	public:
+		RNG();
+		RNG(uint32_t spine_value);
+		virtual ~RNG();
+		uint16_t next();
+	private:
+		int i;						// 用在 hash 函数中的初值
+		uint32_t seed;					// 就是 spine_value， 作为RNG种子
+		std::vector<uint16_t> next_values ;	// 对应每个 seed 的移位寄存器
+		//用于 next()，用 hash 函数产生其余的 rng_output.
+		void produce_more_values();
+	};
+	#endif
+
+#####################################################################################
+2015/03/27
+
+1. 译码部分完成，在未加入噪声的情况下能够正确的译码，证明编码算法有效。
+2. 未加入噪声也未能正确译码的原因：
+	C++ 在对象的初始化时，如果定义了构造函数，并使用定义的构造函数进行初始化，程序将不会进入默认构造函数中，
+	处理方法为：在每个构造函数中都进行基本的初始化，保证使用该类时的不小心。
+	在没有初始化的情况下，hash 函数每次运行的初值不同，算出来的结果也就不同，自然没有办法正确的译码。

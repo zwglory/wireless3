@@ -1,0 +1,58 @@
+﻿Build started 2015/4/7 18:54:03.
+     1>Project "E:\Projects\wirelessz\wireless3\wireless3\wireless3.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\wireless3.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\itpp-4.2\\" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt CodeTreeNode.cpp Hash_func.cpp itppExtend.cpp Lookup3Hash.cpp Mapping.cpp Random.cpp RNG.cpp SpineDecoder.cpp SpineEncoder.cpp stdafx.cpp TextWireless.cpp wireless3.cpp
+         wireless3.cpp
+     1>e:\projects\wirelessz\wireless3\wireless3\wireless3.cpp(43): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'int', possible loss of data
+     1>c:\itpp-4.2\itpp\base\converters.h(55): warning C4244: 'argument' : conversion from 'const double' to 'const int', possible loss of data
+                 e:\projects\wirelessz\wireless3\wireless3\wireless3.cpp(107) : see reference to function template instantiation 'itpp::bvec itpp::to_bvec<double>(const itpp::Vec<Num_T> &)' being compiled
+                 with
+                 [
+                     Num_T=double
+                 ]
+         TextWireless.cpp
+         stdafx.cpp
+         SpineEncoder.cpp
+         SpineDecoder.cpp
+     1>e:\projects\wirelessz\wireless3\wireless3\spinedecoder.cpp(303): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+         RNG.cpp
+         Random.cpp
+     1>e:\projects\wirelessz\wireless3\wireless3\random.cpp(38): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+         Mapping.cpp
+         Lookup3Hash.cpp
+         itppExtend.cpp
+     1>c:\itpp-4.2\itpp\base\converters.h(55): warning C4244: 'argument' : conversion from 'const double' to 'const int', possible loss of data
+                 e:\projects\wirelessz\wireless3\wireless3\itppextend.cpp(22) : see reference to function template instantiation 'itpp::bvec itpp::to_bvec<double>(const itpp::Vec<Num_T> &)' being compiled
+                 with
+                 [
+                     Num_T=double
+                 ]
+         Hash_func.cpp
+         CodeTreeNode.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\wireless3.exe" /NOLOGO /LIBPATH:"E:\project\itpp-4.2\lib\\" itpp_debug2010.lib lapack_win32.lib "libfftw3-3.lib" blas_win32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\wireless3.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Projects\wirelessz\wireless3\wireless3\Debug\wireless3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\wireless3.lib" /MACHINE:X86 Debug\CodeTreeNode.obj
+         Debug\Hash_func.obj
+         Debug\itppExtend.obj
+         Debug\Lookup3Hash.obj
+         Debug\Mapping.obj
+         Debug\Random.obj
+         Debug\RNG.obj
+         Debug\SpineDecoder.obj
+         Debug\SpineEncoder.obj
+         Debug\stdafx.obj
+         Debug\TextWireless.obj
+         Debug\wireless3.obj /FORCE:MULTIPLE 
+         wireless3.vcxproj -> E:\Projects\wirelessz\wireless3\wireless3\Debug\wireless3.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"Debug\wireless3.exe;#1" /manifest Debug\wireless3.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\wireless3.unsuccessfulbuild".
+         Touching "Debug\wireless3.lastbuildstate".
+     1>Done Building Project "E:\Projects\wirelessz\wireless3\wireless3\wireless3.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:14.69

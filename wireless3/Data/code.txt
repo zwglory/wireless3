@@ -1,0 +1,16 @@
+
+	cout << "=============== SpineDecode start ==================" << endl;
+	//vector<int> sym_recv;
+	SpineDecoder desc(sym_trans, k, B, d, spineLen, L);
+	vector<int> de_message = desc.decoder();
+	vector<int>::iterator ide_m = de_message.begin();
+
+	cout << "de_message: " << endl;
+	while(ide_m != de_message.end()){
+		cout << *ide_m << ' ';
+		++ide_m;
+	}
+	cout << endl;
+
+	if(!de_message.empty())
+		de_message.clear();
