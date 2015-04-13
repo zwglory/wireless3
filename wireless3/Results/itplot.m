@@ -9,5 +9,6 @@ set(gca,'fontname','times','fontsize',10);
 xlabel('{\it E_b} / {\it N}_0 [dB]');
 ylabel('BER')
 title('Spinal code on an AWGN Channel');
+axis([-1, inf, -0.5, 1]);
 legend(h1,'Simulation');
 grid on;
