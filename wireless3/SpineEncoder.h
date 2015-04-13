@@ -26,6 +26,9 @@ public:
 
 	double power;				// power of symbol
 
+	//Divide message into blocks
+	int* divm2bl(int* message);
+
 private:
 	size_t n;
 	size_t k;
@@ -37,6 +40,4 @@ private:
 	int precision;				// max mapping length
 	int L;						// number of passes
 
-	//Divide message into blocks
-	int* divm2bl(int* message);
 };
