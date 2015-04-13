@@ -22,7 +22,7 @@ RNG::RNG(){
 
 RNG::RNG(uint32_t spine_value){
 	this->seed = spine_value;
-	this->i = 21215;
+	this->i = 3610617884;
 	this->next_values.clear();
 	uint16_t a[2] = {(this->seed >> 16) & 0xFFFF, this->seed & 0xFFFF};
 
@@ -72,6 +72,6 @@ void RNG::produce_more_values(){
 	this->next_values.push_back(hash_output & 0xFFFF);
 
 	// increment current index
-    this->i = (this->i + 522) & ((1 << 16) - 1);
+    this->i = (this->i + 3243335647) & ((1 << 16) - 1);
 }
 
