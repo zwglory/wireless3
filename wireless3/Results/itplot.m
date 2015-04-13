@@ -1,5 +1,5 @@
-figure(1); clf;
 itload('sc_result_file.it');
+figure(1); clf;
 h1 = semilogy(EbN0dB,ber,'*-r'); hold on
 ebn0db = 10:.1:25;
 ebn0 = 10.^(ebn0db/10);
