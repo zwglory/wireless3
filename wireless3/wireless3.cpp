@@ -95,6 +95,9 @@ int main(int argc, char **argv)
 	cout << "Symbol length: " << L*spineLen << " byte" << endl
 		 << "Spinal coding complete." << endl;
 
+	/*SpineDecoder desc(sym_trans, k, B, d, spineLen, L);
+	vector<int> de_message = desc.decoder();*/
+
 //=====================================================================================
 // channel with itpp
 //=====================================================================================
@@ -119,7 +122,7 @@ int main(int argc, char **argv)
 	/* Init */
 	Ec = sc.power;					//The transmitted energy per symbol.
 	Eb = Ec;						//The transmitted energy per bit.
-	EbN0dB = linspace(10,50,30);	//Simulate for 10 Eb/N0 values from 0 to 9 dB.
+	EbN0dB = linspace(10,20,1);	//Simulate for 10 Eb/N0 values from 0 to 9 dB.
 	EbN0 = inv_dB(EbN0dB);			//Calculate Eb/N0 in a linear scale instead of dB. 
 	N0 = Eb * pow(EbN0,-1.0);		//N0 is the variance of the (complex valued) noise.
 
@@ -142,9 +145,10 @@ int main(int argc, char **argv)
 		//awgn_channel.set_noise(N0(i));
 
 		//Run the transmited symbols through the channel using the () operator:
-		recive_sym = awgn_channel(trans_sym);
+		//recive_sym = awgn_channel(trans_sym);
+		recive_sym = trans_sym; // √ªº”‘Î…˘
 		//recive_sym = trans_sym + 0.2*sqrt(N0(i)/2)*randn(k*spineLen);
-		//cout << "recive_sym: " << recive_sym << endl;
+		cout << "recive_sym: " << recive_sym << endl;
 
 		/* decoding, sequence of 1 and 0, after decoded */
 		vector<double> sym_recv = vec_to_uint(recive_sym, k*spineLen);

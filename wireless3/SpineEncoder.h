@@ -19,6 +19,10 @@ using namespace std;
 class SpineEncoder{
 public:
 	SpineEncoder();
+	SpineEncoder(size_t k_in, int c_in, int precision_in, int L_in){
+		/* This is a test constructor for encoder, please do not use it in implementation. */
+		this->n = 21;
+	};
 	SpineEncoder(size_t k_in, int c_in, int precision_in, int L_in, int mlen);
 	virtual ~SpineEncoder();
 

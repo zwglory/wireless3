@@ -279,7 +279,7 @@ vector<int> SpineDecoder::get_most_likely(){
 		message.push_back(a);
 		message.push_back(b);
 		message.push_back(c);
-		cout << a << ' ' << b << ' ' << c << ' ';
+		//cout << a << ' ' << b << ' ' << c << ' ';
 
 		++im;
 	}
