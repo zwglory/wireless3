@@ -5,6 +5,7 @@
 //----Time:   2015/03/19
 //====================================================================
 
+#include <stdlib.h>
 #include "SpineDecoder.h"
 
 using namespace std;
@@ -304,6 +305,9 @@ vector<int> SpineDecoder::decoder(){
 		}//end for
 
 		//cout << "expand_wavefront..." << endl;
+		if(wavefront.begin()->path.size() == 36){
+			system("pause");
+		}
 		expand_wavefront(sym_spine);
 
 		//cout << "prune_wavefront..." << endl;
