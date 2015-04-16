@@ -120,11 +120,11 @@ int main(int argc, char **argv)
 	//Real_Timer tt;                 //The timer used to measure the execution time
 
 	/* Init */
-	Ec = sc.power;					//The transmitted energy per symbol.
+	Ec = 8;					//The transmitted energy per symbol.
 	Eb = Ec;						//The transmitted energy per bit.
-	EbN0dB = linspace(10,20,1);	//Simulate for 10 Eb/N0 values from 0 to 9 dB.
+	EbN0dB = linspace(0,10,2);	//Simulate for 10 Eb/N0 values from 0 to 9 dB.
 	EbN0 = inv_dB(EbN0dB);			//Calculate Eb/N0 in a linear scale instead of dB. 
-	N0 = Eb * pow(EbN0,-1.0);		//N0 is the variance of the (complex valued) noise.
+	N0 = Eb * pow(EbN0,-1.0)/4;		//N0 is the variance of the (complex valued) noise.
 
 	/* malloc to itpp::vec */
 	trans_sym = uint_to_vec(sym_trans, L*spineLen);
@@ -141,13 +141,14 @@ int main(int argc, char **argv)
 		cout << "Now simulating Eb/N0 value number " << i+1 << " of " << EbN0dB.length() << endl;
 
 		//Set the noise variance of the AWGN channel:
+		cout << "Noise: " << N0(i) << endl;
 		AWGN_Channel awgn_channel(N0(i));     //The AWGN channel class
 		//awgn_channel.set_noise(N0(i));
 
 		//Run the transmited symbols through the channel using the () operator:
-		//recive_sym = awgn_channel(trans_sym);
-		recive_sym = trans_sym; // 没加噪声
-		//recive_sym = trans_sym + 0.2*sqrt(N0(i)/2)*randn(k*spineLen);
+		recive_sym = awgn_channel(trans_sym);
+		//recive_sym = trans_sym; // 没加噪声
+		//recive_sym = trans_sym + sqrt(N0(i)/2)*randn(k*spineLen);
 		cout << "recive_sym: " << recive_sym << endl;
 
 		/* decoding, sequence of 1 and 0, after decoded */
@@ -171,6 +172,8 @@ int main(int argc, char **argv)
 		berc.count(trans_bits,recive_bits);			//Count the bit errors
 		bit_error_rate(i) = berc.get_errorrate();   //Save the estimated BER in the result vector
 
+		/* 要在这个地方加上与 BER 的阈值做比较的部分 */
+
 		if(!sym_recv.empty())
 			sym_recv.clear();
 		if(!de_message.empty())
@@ -193,7 +196,7 @@ int main(int argc, char **argv)
 	ff << Name("ber") << bit_error_rate;
 	ff.close();
 
-	
+	system("pause");
 
 	return 0;
 }
