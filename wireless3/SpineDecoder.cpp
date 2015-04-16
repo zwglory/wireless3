@@ -5,6 +5,7 @@
 //----Time:   2015/03/19
 //====================================================================
 
+#include <stdlib.h>
 #include "SpineDecoder.h"
 
 using namespace std;
@@ -218,7 +219,7 @@ void SpineDecoder::prune_wavefront(){
 inline int SpineDecoder::minTree(vector<CodeTreeNode> beam){
 	vector<CodeTreeNode>::iterator beam_it = beam.begin();
 	int min_metric = beam.begin()->path_metric;
-	while(beam_it != beam.end()-1){
+	while(beam_it != beam.end()){
 		if(beam_it->path_metric < min_metric)
 			min_metric = beam_it->path_metric;
 		++beam_it;
@@ -279,7 +280,7 @@ vector<int> SpineDecoder::get_most_likely(){
 		message.push_back(a);
 		message.push_back(b);
 		message.push_back(c);
-		cout << a << ' ' << b << ' ' << c << ' ';
+		//cout << a << ' ' << b << ' ' << c << ' ';
 
 		++im;
 	}
@@ -304,10 +305,13 @@ vector<int> SpineDecoder::decoder(){
 		}//end for
 
 		//cout << "expand_wavefront..." << endl;
+		/*if(wavefront.begin()->path.size() == 36){
+			system("pause");
+		}*/
 		expand_wavefront(sym_spine);
 
 		//cout << "prune_wavefront..." << endl;
-		if(this->wavefront.size() >= size_t(this->B))
+		if(this->wavefront.size() >= size_t(this->B*(1<<k)))
 			prune_wavefront();
 	}//end for
 

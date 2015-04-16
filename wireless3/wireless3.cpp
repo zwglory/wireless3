@@ -95,6 +95,9 @@ int main(int argc, char **argv)
 	cout << "Symbol length: " << L*spineLen << " byte" << endl
 		 << "Spinal coding complete." << endl;
 
+	/*SpineDecoder desc(sym_trans, k, B, d, spineLen, L);
+	vector<int> de_message = desc.decoder();*/
+
 //=====================================================================================
 // channel with itpp
 //=====================================================================================
@@ -111,17 +114,17 @@ int main(int argc, char **argv)
 	double Ec, Eb;
 	vec EbN0dB, EbN0, N0, noise_variance, bit_error_rate; 
 
-	AWGN_Channel awgn_channel;     //The AWGN channel class
+	//AWGN_Channel awgn_channel;     //The AWGN channel class
 	it_file ff;                    //For saving the results to file
 	BERC berc;                     //Used to count the bit errors
 	//Real_Timer tt;                 //The timer used to measure the execution time
 
 	/* Init */
-	Ec = sc.power;                 //The transmitted energy per symbol.
+	Ec = 8;					//The transmitted energy per symbol.
 	Eb = Ec;						//The transmitted energy per bit.
-	EbN0dB = linspace(10,25,30); //Simulate for 10 Eb/N0 values from 0 to 9 dB.
-	EbN0 = inv_dB(EbN0dB);         //Calculate Eb/N0 in a linear scale instead of dB. 
-	N0 = Eb * pow(EbN0,-1.0);      //N0 is the variance of the (complex valued) noise.
+	EbN0dB = linspace(0,10,2);	//Simulate for 10 Eb/N0 values from 0 to 9 dB.
+	EbN0 = inv_dB(EbN0dB);			//Calculate Eb/N0 in a linear scale instead of dB. 
+	N0 = Eb * pow(EbN0,-1.0)/4;		//N0 is the variance of the (complex valued) noise.
 
 	/* malloc to itpp::vec */
 	trans_sym = uint_to_vec(sym_trans, L*spineLen);
@@ -138,12 +141,15 @@ int main(int argc, char **argv)
 		cout << "Now simulating Eb/N0 value number " << i+1 << " of " << EbN0dB.length() << endl;
 
 		//Set the noise variance of the AWGN channel:
-		awgn_channel.set_noise(N0(i));
+		cout << "Noise: " << N0(i) << endl;
+		AWGN_Channel awgn_channel(N0(i));     //The AWGN channel class
+		//awgn_channel.set_noise(N0(i));
 
 		//Run the transmited symbols through the channel using the () operator:
 		recive_sym = awgn_channel(trans_sym);
+		//recive_sym = trans_sym; // 没加噪声
 		//recive_sym = trans_sym + sqrt(N0(i)/2)*randn(k*spineLen);
-		//cout << "recive_sym: " << recive_sym << endl;
+		cout << "recive_sym: " << recive_sym << endl;
 
 		/* decoding, sequence of 1 and 0, after decoded */
 		vector<double> sym_recv = vec_to_uint(recive_sym, k*spineLen);
@@ -151,12 +157,22 @@ int main(int argc, char **argv)
 		SpineDecoder desc(sym_recv, k, B, d, spineLen, L);
 		vector<int> de_message = desc.decoder();
 
+		/* Check if de_message and message in the same length. */
+		if(de_message.size() != mlen){
+			for(size_t count = de_message.size();
+				count != mlen;
+				--count)
+				de_message.erase(de_message.end()-1);
+		}
+
 		recive_bits = uint_to_bvec(de_message);
 
 		//Calculate the bit error rate:
 		berc.clear();                               //Clear the bit error rate counter
-		berc.count(trans_bits,recive_bits); //Count the bit errors
+		berc.count(trans_bits,recive_bits);			//Count the bit errors
 		bit_error_rate(i) = berc.get_errorrate();   //Save the estimated BER in the result vector
+
+		/* 要在这个地方加上与 BER 的阈值做比较的部分 */
 
 		if(!sym_recv.empty())
 			sym_recv.clear();
@@ -166,6 +182,8 @@ int main(int argc, char **argv)
 	}//end for
 
 	//Print the results:
+	/*cout << "trans bits: " << endl << trans_bits << endl;
+	cout << "the last recive bits: " << endl << recive_bits << endl;*/
 	cout << endl;
 	cout << "EbN0dB = " << EbN0dB << " [dB]" << endl;
 	cout << "BER = " << bit_error_rate << endl;
@@ -178,7 +196,7 @@ int main(int argc, char **argv)
 	ff << Name("ber") << bit_error_rate;
 	ff.close();
 
-	
+	system("pause");
 
 	return 0;
 }
