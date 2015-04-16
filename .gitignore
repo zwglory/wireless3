@@ -42,6 +42,7 @@ local.properties
 *.sln.docstates
 *.sdf
 ipch/*
+debug/*
 
 # Build results
 
